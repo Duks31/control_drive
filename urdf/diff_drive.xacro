@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<robot name="diff_drive" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find control_drive)/urdf/materials.xacro" />
+    <xacro:include filename="$(find control_drive)/urdf/diff_drive.trans" />
+    <xacro:include filename="$(find control_drive)/urdf/diff_drive.gazebo" />
+
+    <link name="base_link">
+        <inertial>
+            <origin xyz="0.00592205992127558 -1.59270492016768e-17 0.05534127750729263" rpy="0 0 0" />
+            <mass value="2.4212002403503776" />
+            <inertia ixx="0.008303" iyy="0.008979" izz="0.015122" ixy="-0.0" iyz="-0.0"
+                ixz="-0.000596" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://$(find control_drive)/meshes/base_link.stl"
+                    scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="yellow" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://$(find control_drive)/meshes/base_link.stl"
+                    scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="right_wheel_1">
+        <inertial>
+            <origin xyz="1.737006930036608e-17 -0.012499999999999997 0.0" rpy="0 0 0" />
+            <mass value="0.18260507298990675" />
+            <inertia ixx="0.000124" iyy="0.000228" izz="0.000124" ixy="0.0" iyz="-0.0" ixz="0.0" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.0 0.1 -0.05" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://$(find control_drive)/meshes/right_wheel_1.stl"
+                    scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="black" />
+        </visual>
+        <collision>
+            <origin xyz="-0.0 0.1 -0.05" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://$(find control_drive)/meshes/right_wheel_1.stl"
+                    scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="left_wheel_1">
+        <inertial>
+            <origin xyz="1.737006930036608e-17 0.012499999999999997 0.0" rpy="0 0 0" />
+            <mass value="0.18260507298990675" />
+            <inertia ixx="0.000124" iyy="0.000228" izz="0.000124" ixy="-0.0" iyz="0.0" ixz="0.0" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.0 -0.1 -0.05" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://$(find control_drive)/meshes/left_wheel_1.stl"
+                    scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="black" />
+        </visual>
+        <collision>
+            <origin xyz="-0.0 -0.1 -0.05" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://$(find control_drive)/meshes/left_wheel_1.stl"
+                    scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="lidar_1">
+        <inertial>
+            <origin xyz="0.0 5.584513020951031e-18 0.012500000000000011" rpy="0 0 0" />
+            <mass value="0.10789485809488784" />
+            <inertia ixx="4.1e-05" iyy="4.1e-05" izz="7e-05" ixy="0.0" iyz="-0.0" ixz="0.0" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.05 -0.0 -0.125" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://$(find control_drive)/meshes/lidar_1.stl"
+                    scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="purple" />
+        </visual>
+        <collision>
+            <origin xyz="-0.05 -0.0 -0.125" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://$(find control_drive)/meshes/lidar_1.stl"
+                    scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="Revolute_1" type="continuous">
+        <origin xyz="0.0 -0.1 0.05" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="right_wheel_1" />
+        <axis xyz="0.0 -1.0 0.0" />
+    </joint>
+
+    <joint name="Revolute_2" type="continuous">
+        <origin xyz="0.0 0.1 0.05" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="left_wheel_1" />
+        <axis xyz="0.0 1.0 0.0" />
+    </joint>
+
+    <joint name="Rigid_3" type="fixed">
+        <origin xyz="0.05 0.0 0.125" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="lidar_1" />
+    </joint>
+
+</robot>
