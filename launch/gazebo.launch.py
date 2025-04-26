@@ -74,7 +74,6 @@ def generate_launch_description():
         output="screen",
     )
 
-    # check the bridge config file again: ERROR
     bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
@@ -98,6 +97,6 @@ def generate_launch_description():
             ignition_gazebo_server,
             ignition_gazebo_client,
             urdf_spawn_node,
-            bridge,
+            bridge, 
         ]
     )
