@@ -4,6 +4,7 @@ from launch import LaunchDescription
 from launch.actions import (
     IncludeLaunchDescription,
     AppendEnvironmentVariable,
+    TimerAction,
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution
@@ -73,7 +74,38 @@ def generate_launch_description():
         arguments=["-name", "diff_drive", "-topic", "robot_description"],
         output="screen",
     )
+    
+    joint_state_broadcaster_spawner = TimerAction(
+        period=8.0,
+        actions=[
+            Node(
+                package="controller_manager",
+                executable="spawner",
+                arguments=[
+                    "joint_state_broadcaster",
+                    "--controller-manager", "/controller_manager",
+                ],
+                output="screen",
+            )
+        ],
+    )
 
+    diff_drive_spawner = TimerAction(
+        period=10.0,
+        actions=[
+            Node(
+                package="controller_manager",
+                executable="spawner",
+                arguments=[
+                    "control_drive_controller",
+                    "--controller-manager", "/controller_manager",
+                ],
+                output="screen",
+            )
+        ],
+    )
+
+    # Bridge from ROS2 to Gazebo
     bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
@@ -97,6 +129,8 @@ def generate_launch_description():
             ignition_gazebo_server,
             ignition_gazebo_client,
             urdf_spawn_node,
-            bridge, 
+            bridge,
+            joint_state_broadcaster_spawner, 
+            diff_drive_spawner,
         ]
     )

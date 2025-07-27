@@ -7,6 +7,9 @@
     <maintainer email="todo@todo.com">author</maintainer>
     <license>TODO: License declaration</license>
 
+    <depend condition="$GZ_VERSION == '' or $GZ_VERSION == fortress">ignition-gazebo6</depend>
+    <depend condition="$GZ_VERSION == '' or $GZ_VERSION == fortress">ignition-plugin</depend>
+
     <depend>xacro</depend>
     <depend>rviz2</depend>
     <depend>robot_state_publisher</depend>
@@ -15,6 +18,10 @@
     <depend>ros_gz_bridge</depend>
     <depend>ros_gz_image</depend>
     <depend>ros_gz_sim</depend>
+    <depend>controller_manager</depend>
+    <depend>hardware_interface</depend>
+    <depend>pluginlib</depend>
+    <depend>gz_ros2_control</depend>
 
     <test_depend>ament_copyright</test_depend>
     <test_depend>ament_flake8</test_depend>
