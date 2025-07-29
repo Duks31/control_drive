@@ -15,7 +15,7 @@ control_drive_controller:
     left_wheel_names: ["Revolute_2"]
     right_wheel_names: ["Revolute_1"]
 
-    wheel_separation: 0.5
+    wheel_separation: 0.2
     wheel_radius: 0.05
 
     base_frame_id: base_link
@@ -24,7 +24,7 @@ control_drive_controller:
 
     enable_odom_tf: true
     odom_frame_id: odom
-
+  
     publish_cmd: true
 
     cmd_vel_timeout: 0.25

@@ -32,13 +32,14 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
-        parameters=[{"robot_description": robot_urdf}],
+        parameters=[{"robot_description": robot_urdf}, {"use_sim_time": True}],
     )
 
     joint_state_publisher_node = Node(
         package="joint_state_publisher",
         executable="joint_state_publisher",
         name="joint_state_publisher",
+        parameters=[{"use_sim_time": True}],
     )
 
     # Ignition Gazebo server launch
@@ -74,7 +75,7 @@ def generate_launch_description():
         arguments=["-name", "diff_drive", "-topic", "robot_description"],
         output="screen",
     )
-    
+
     joint_state_broadcaster_spawner = TimerAction(
         period=8.0,
         actions=[
@@ -83,7 +84,8 @@ def generate_launch_description():
                 executable="spawner",
                 arguments=[
                     "joint_state_broadcaster",
-                    "--controller-manager", "/controller_manager",
+                    "--controller-manager",
+                    "/controller_manager",
                 ],
                 output="screen",
             )
@@ -98,7 +100,8 @@ def generate_launch_description():
                 executable="spawner",
                 arguments=[
                     "control_drive_controller",
-                    "--controller-manager", "/controller_manager",
+                    "--controller-manager",
+                    "/controller_manager",
                 ],
                 output="screen",
             )
@@ -114,11 +117,13 @@ def generate_launch_description():
             {
                 "config_file": os.path.join(
                     share_dir, "config", "control_drive_bridge.yaml"
-                )
+                ),
+                "use_sim_time": True
             }
         ],
         output="screen",
     )
+
 
     return LaunchDescription(
         [
@@ -130,7 +135,7 @@ def generate_launch_description():
             ignition_gazebo_client,
             urdf_spawn_node,
             bridge,
-            joint_state_broadcaster_spawner, 
+            joint_state_broadcaster_spawner,
             diff_drive_spawner,
         ]
     )
