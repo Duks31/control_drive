@@ -18,13 +18,14 @@ setup(
     ],
     install_requires=["setuptools"],
     zip_safe=True,
-    maintainer="author",
-    maintainer_email="todo@todo.com",
+    maintainer="Chidubem Ndukwe",
+    maintainer_email="chidubemjan31@gmail.com",
     description="The " + package_name + " package",
     license="TODO: License declaration",
     tests_require=["pytest"],
     entry_points={
-        "console_scripts": [],
+        "console_scripts": [
+            'custom_teleop = control_drive.custom_teleop:main'
+        ],
     },
 )
-    
