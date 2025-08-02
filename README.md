@@ -5,6 +5,13 @@
 ros2 launch control_drive gazebo.launch.py
 ```
 
+### Launching rviz 
+
+```bash
+ ros2 launch control_drive display.launch.py
+``` 
+Change Fixed Frame in Global options to odom
+
 ### Test linear velocity publisher
 
 ``` bash
