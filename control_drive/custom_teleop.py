@@ -51,7 +51,7 @@ q/e : forward+left/forward+right
 z/c : backward+left/backward+right
 
 Speed Controls:
-+/- : increase/decrease speeds by 10%
++/- : increase/decrease speeds by 10%%  
 1/2/3 : set speed presets (slow/medium/fast) 
 
 Current Settings:
@@ -113,6 +113,9 @@ class CustomTeleop(Node):
             output = min(input, output + slop)
         elif input < -slop:
             output = max(input, output - slop)
+        else:
+            output = 0.0
+        return output
 
     def constrain(self, input_vel, low_boundary, high_boundary):
         """Constrain velocity withing boundaries"""
@@ -144,18 +147,18 @@ class CustomTeleop(Node):
     def run(self):
         """Main control loop"""
         try:
-            print(msg % (self.speed, self.turn))
+            print(msg.format(self.speed, self.turn))
 
             while rclpy.ok():
                 key = self.getKey()
 
                 if key in moveBindings.keys():
-                    x = moveBindings[key][0] * self.speed
-                    y = moveBindings[key][1] * self.speed
-                    z = moveBindings[key][2] * self.speed
-                    th_x = moveBindings[key][3] * self.turn
-                    th_y = moveBindings[key][4] * self.turn
-                    th_z = moveBindings[key][5] * self.turn
+                    x = float(moveBindings[key][0] * self.speed)
+                    y = float(moveBindings[key][1] * self.speed)
+                    z = float(moveBindings[key][2] * self.speed)
+                    th_x = float(moveBindings[key][3] * self.turn)
+                    th_y = float(moveBindings[key][4] * self.turn)
+                    th_z = float(moveBindings[key][5] * self.turn)
 
                     with self.twist_lock:
                         self.twist.linear.x = x
@@ -167,24 +170,23 @@ class CustomTeleop(Node):
 
                     self.should_publish = True
                     print(
-                        "Moving: {key} | Linear: ({x:.2f}, {y:.2f}, {z:.2f}) | Angular: ({th_x:.2f}, {th_y:.2f}, {th_z:.2f})"
+                        f"Moving: {key} | Linear: ({x:.2f}, {y:.2f}, {z:.2f}) | Angular: ({th_x:.2f}, {th_y:.2f}, {th_z:.2f})"
                     )
 
                 elif key in speedBindigns.keys():
-                    self.speed = self.speed * speedBindigns[key][0]
-                    self.turn = self.turn * speedBindigns[key][1]
-
+                    self.speed = float(self.speed * speedBindigns[key][0])
+                    self.turn = float(self.turn * speedBindigns[key][1])
                     self.speed = self.checkLinearLimitVelocity(self.speed)
                     self.turn = self.checkAngularLimitVelocity(self.turn)
 
                     print(f"Speed Adjustment: {self.vels(self.speed, self.turn)}")
                     if self.status == 14:
-                        print(msg % (self.speed, self.turn))
+                        print(msg.format(self.speed, self.turn))
                     self.status = (self.status + 1) % 15
 
                 elif key in presetBindings.keys():
-                    self.speed = presetBindings[key][0]
-                    self.turn = presetBindings[key][1]
+                    self.speed = float(presetBindings[key][0])
+                    self.turn = float(presetBindings[key][1])
                     print(f"Speed preset {key}: {self.vels(self.speed, self.turn)}")
 
                 elif key == " ":
@@ -198,23 +200,37 @@ class CustomTeleop(Node):
 
                 else:
                     with self.twist_lock:
-                        self.twist.linear.x = self.makeSimpleProfile(self.twist.linear.x, 0.0, 0.01)
-                        self.twist.linear.y = self.makeSimpleProfile(self.twist.linear.y, 0.0, 0.01)
-                        self.twist.linear.z = self.makeSimpleProfile(self.twist.linear.z, 0.0, 0.01)
-                        self.twist.angular.x = self.makeSimpleProfile(self.twist.angular.x, 0.0, 0.1)
-                        self.twist.angular.y = self.makeSimpleProfile(self.twist.angular.y, 0.0, 0.1)
-                        self.twist.angular.z = self.makeSimpleProfile(self.twist.angular.z, 0.0, 0.1)
-                    
-                    all_zero = (abs(self.twist.linear.x or 0.0) < 0.01 and 
-                               abs(self.twist.linear.y or 0.0) < 0.01 and 
-                               abs(self.twist.linear.z or 0.0) < 0.01 and
-                               abs(self.twist.angular.x or 0.0) < 0.1 and 
-                               abs(self.twist.angular.y or 0.0) < 0.1 and 
-                               abs(self.twist.angular.z or 0.0) < 0.1)
-                    
+                        self.twist.linear.x = float(self.makeSimpleProfile(
+                            self.twist.linear.x, 0.0, 0.01
+                        ))
+                        self.twist.linear.y = float(self.makeSimpleProfile(
+                            self.twist.linear.y, 0.0, 0.01
+                        ))
+                        self.twist.linear.z = float(self.makeSimpleProfile(
+                            self.twist.linear.z, 0.0, 0.01
+                        ))
+                        self.twist.angular.x = float(self.makeSimpleProfile(
+                            self.twist.angular.x, 0.0, 0.1
+                        ))
+                        self.twist.angular.y = float(self.makeSimpleProfile(
+                            self.twist.angular.y, 0.0, 0.1
+                        ))
+                        self.twist.angular.z = float(self.makeSimpleProfile(
+                            self.twist.angular.z, 0.0, 0.1
+                        ))
+
+                    all_zero = (
+                        abs(self.twist.linear.x or 0.0) < 0.01
+                        and abs(self.twist.linear.y or 0.0) < 0.01
+                        and abs(self.twist.linear.z or 0.0) < 0.01
+                        and abs(self.twist.angular.x or 0.0) < 0.1
+                        and abs(self.twist.angular.y or 0.0) < 0.1
+                        and abs(self.twist.angular.z or 0.0) < 0.1
+                    )
+
                     self.should_publish = not all_zero
-                    
-                    if key == '\x03':
+
+                    if key == "\x03":
                         break
 
         except Exception as e:
@@ -225,6 +241,7 @@ class CustomTeleop(Node):
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.settings)
             self.get_logger().info("Teleop controller stopped")
 
+
 def main(args=None):
     rclpy.init(args=args)
 
@@ -232,7 +249,7 @@ def main(args=None):
     try:
         controller = CustomTeleop()
 
-        spin_thread = threading.Thread(target=rclpy.spin, args = (controller, ))
+        spin_thread = threading.Thread(target=rclpy.spin, args=(controller,))
         spin_thread.daemon = True
         spin_thread.start()
 
@@ -248,5 +265,6 @@ def main(args=None):
             controller.destroy_node()
         rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

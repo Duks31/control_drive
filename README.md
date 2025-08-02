@@ -1,9 +1,27 @@
-_Literraly as the name implies_
+## Control Drive Differential Drive Bot
 
-Launching Gazebo (Ign Gz): ros2 launch control_drive gazebo.launch.py
+### Launching Gazebo (Ign Gz): 
+```bash
+ros2 launch control_drive gazebo.launch.py
+```
 
-Few commands:
+### Test linear velocity publisher
 
-- ros2 topic pub /control_drive_controller/cmd_vel_unstamped geometry_msgs/msg/Twist "{linear: {x: 1.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.5}}"
+``` bash
+ros2 topic pub /control_drive_controller/cmd_vel_unstamped geometry_msgs/msg/Twist "{linear: {x: 1.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.5}}"\
+```
 
-- ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=/control_drive_controller/cmd_vel_unstamped
+### Run with teleop twist keyboard 
+
+```bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=/control_drive_controller/cmd_vel_unstamped
+```
+
+#### custom teleop control
+
+Custom control script in `control_drive/custom_teleop.py`
+
+```bash
+ros2 run control_drive custom_teleop --ros-args -r /cmd_vel:=/control_drive_controller/cmd_vel_unstamped
+```
+
