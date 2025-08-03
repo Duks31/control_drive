@@ -1,6 +1,6 @@
 ## Control Drive Differential Drive Bot
 
-https://github.com/user-attachments/assets/0ca53fca-9ba5-4698-ad27-b10539069632
+https://github.com/user-attachments/assets/bfa14671-e47c-4b4c-9c9c-9bed5e9809de
 
 #### Requirements:
 - ROS2 Humble
