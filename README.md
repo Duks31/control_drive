@@ -1,9 +1,12 @@
 ## Control Drive Differential Drive Bot
 
+https://github.com/user-attachments/assets/0ca53fca-9ba5-4698-ad27-b10539069632
+
 #### Requirements:
 - ROS2 Humble
 - Gazebo (Ign) 
 
+Building
 ```bash
 colcon build
 ```
