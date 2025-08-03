@@ -1,5 +1,13 @@
 ## Control Drive Differential Drive Bot
 
+#### Requirements:
+- ROS2 Humble
+- Gazebo (Ign) 
+
+```bash
+colcon build
+```
+
 ### Launching Gazebo (Ign Gz): 
 ```bash
 ros2 launch control_drive gazebo.launch.py
