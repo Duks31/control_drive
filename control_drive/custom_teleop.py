@@ -6,7 +6,6 @@ import select
 import termios
 import tty
 import threading
-import time
 
 
 # Format: key -> (linear_x, linear_y, linear_z, angular_x, angular_y, angular_z)
