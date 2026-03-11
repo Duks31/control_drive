@@ -25,7 +25,9 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            'custom_teleop = control_drive.custom_teleop:main'
+            'keyboard_controller = control_drive.keyboard_controller:main',
+            'script_controller = control_drive.script_controller:main',
+            'cmd_vel_relay = control_drive.cmd_vel_relay:main',
         ],
     },
 )

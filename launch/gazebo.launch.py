@@ -118,12 +118,18 @@ def generate_launch_description():
                 "config_file": os.path.join(
                     share_dir, "config", "control_drive_bridge.yaml"
                 ),
-                "use_sim_time": True
+                "use_sim_time": True,
             }
         ],
         output="screen",
     )
 
+    cmd_vel_relay = Node(
+        package="control_drive",
+        executable="cmd_vel_relay",
+        name="cmd_vel_relay",
+        output="screen",
+    )
 
     return LaunchDescription(
         [
@@ -137,5 +143,6 @@ def generate_launch_description():
             bridge,
             joint_state_broadcaster_spawner,
             diff_drive_spawner,
+            cmd_vel_relay,
         ]
     )
