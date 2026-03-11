@@ -25,9 +25,10 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            'keyboard_controller = control_drive.keyboard_controller:main',
-            'script_controller = control_drive.script_controller:main',
-            'cmd_vel_relay = control_drive.cmd_vel_relay:main',
+            "keyboard_controller = control_drive.keyboard_controller:main",
+            "script_controller = control_drive.script_controller:main",
+            "cmd_vel_relay = control_drive.cmd_vel_relay:main",
+            "gamepad_controller = control_drive.gamepad_controller:main",
         ],
     },
 )
